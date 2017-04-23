@@ -16,7 +16,7 @@ class cache(object):
 
 	def read_write(self,blockNum,indexNum,tagNum):
 		self.time+=1
-		if(self.type=='s' or self.type=='f'):
+		if(self.type=='s'):
 			if(np.isnan(self.tag[indexNum][0])):
 				self.tag[indexNum][0]=tagNum
 				self.cache_block[indexNum][0][0]=blockNum
@@ -51,6 +51,43 @@ class cache(object):
 						break
 					else:
 						ways_count+=1
+
+		elif(self.type=='f'):
+			nanInd=[0,0]
+			nanExist=False
+			hitOccur=False
+			r=np.arange(self.sets)
+			c=np.arange(self.ways)
+			for x,y in itertools.product(r,c):
+				if(self.cache_block[x,y,0]==blockNum):
+					self.hits+=1
+					print "hit"
+					hitOccur
+					cache[x,y,1]=time
+					break
+				elif(np.isnan(cache[x,y,0])):
+					nanExist=True
+					nanInd=[x,y]
+					break
+				else:
+					pass
+			if(not hitOccur):
+				if(nanExist):
+					n1,n2=nanInd
+					cache[n1,n2,0]=blockNum		
+					cache[n1,n2,1]=time
+					miss+=1
+					print "miss"
+				else:
+					idx=np.nanargmin(cache[:,:,1])
+					shape1=cache[:,:,1].shape[1]
+					r=int(idx%shape1)
+					c=int((idx-r)/shape1)
+					cache[r,c,0]=blockNum
+					cache[r,c,1]=time
+					miss+=1
+					print "miss"
+
 
 
 def split_add(add,sets,ways,cache_size):

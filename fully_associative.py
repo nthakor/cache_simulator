@@ -38,38 +38,46 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 		nanInd=[0,0]
 		nanExist=False
 		hitOccur=False
+		# minTime
 		r=np.arange(arguments['set'])
 		c=np.arange(arguments['ways'])
 		for x,y in itertools.product(r,c):
+			# print x,y
 			if(cache[x,y,0]==blockNum):
 				hits+=1
 				print "hit"
-				hitOccur
+				hitOccur=True
 				cache[x,y,1]=time
 				break
-			elif(np.isnan(cache[x,y,0])):
+			elif(np.isnan(cache[x,y,0]) and nanExist==False):
 				nanExist=True
 				nanInd=[x,y]
-				break
+				# print "nanChanged"
+				# break
 			else:
 				pass
-		# print cache[:,:,0]
-		if(not hitOccur):
+		if(hitOccur==False):
 			if(nanExist):
 				n1,n2=nanInd
 				cache[n1,n2,0]=blockNum		
 				cache[n1,n2,1]=time
 				miss+=1
-				print "miss"
+				# print "miss"
+				print "bcz adding first time"
 			else:
 				idx=np.nanargmin(cache[:,:,1])
 				shape1=cache[:,:,1].shape[1]
 				r=int(idx%shape1)
 				c=int((idx-r)/shape1)
+				print "minTime Before replacing: %d"%(np.min(cache[:,:,1])),
+				print "minTime accrd to calcul: %d"%(cache[c,r,1]),
 				cache[r,c,0]=blockNum
 				cache[r,c,1]=time
 				miss+=1
-				print "miss"
+				# print "miss"
+				print "replacing"
+
+		# break
 
 
 
