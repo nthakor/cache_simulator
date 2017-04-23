@@ -10,12 +10,12 @@ Following are input parameters
   - ```-size size of cache in kb integer```
   - ```-type  f or s for fully and set associative respectively```
 
-#Note
+# Note
 	Parameters for L1,L2 and L3 are separated by "_"
-#Demo Input
+# Demo Input
 ``` python main.py -t data.txt -w 16_8_4 -s 256_128_64 -size 256_64_16 -type f_s_f```
 
-#Writing Method
+# Writing Method
 
 We are using no write allocate policy.
 Suppose the data we are writing is already in L1,well and good.

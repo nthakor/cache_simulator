@@ -10,7 +10,7 @@ Following are input parameters
   - ```-size size of cache in kb integer```
   - ```-type  f or s for fully and set associative respectively```
 
-#Demo Input
+# Demo Input
 ``` python main.py -t data.txt -w 8 -s 256 -size 64 -type f```
 
 # Output
