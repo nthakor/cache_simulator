@@ -21,4 +21,5 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 		blockNum,indexNum,tagNum=split_add(add,arguments['set'],arguments['ways'],arguments['cache_size'])
 		cache_1.read_write(blockNum,indexNum,tagNum)
 
-	print "miss: ",cache_1.missed,"Hits:",cache_1.hits
+print "miss: ",cache_1.missed,"Hits:",cache_1.hits
+print "Hit Rate: %d/%d"%(cache_1.missed,cache_1.time)
