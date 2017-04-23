@@ -23,3 +23,4 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 
 print "miss: ",cache_1.missed,"Hits:",cache_1.hits
 print "Hit Rate: %d/%d"%(cache_1.missed,cache_1.time)
+print "Stall Cycles: %d"%(cache_1.missed)
