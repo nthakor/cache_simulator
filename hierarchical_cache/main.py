@@ -52,6 +52,7 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 				L3.read_write(L2_ind[0],L2_ind[1],L2_ind[2])
 
 
-	print "miss: ",L1.missed,"Hits:",L1.hits,"time:",L1.time
-	print "miss: ",L2.missed,"Hits:",L2.hits,"time:",L2.time
-	print "miss: ",L3.missed,"Hits:",L3.hits,"time:",L3.time
+	print "miss: ",L1.missed,"Hits:",L1.hits,"hit rate: %d/%d"%(L1.hits,L1.time)
+	print "miss: ",L2.missed,"Hits:",L2.hits,"hit rate: %d/%d"%(L2.hits,L2.time)
+	print "miss: ",L3.missed,"Hits:",L3.hits,"hit rate: %d/%d"%(L3.hits,L3.time)
+	print "Stall Cycles: %d"%(L1.missed)

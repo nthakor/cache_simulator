@@ -23,29 +23,29 @@ class cache(object):
 				self.cache_block[indexNum][0][0]=blockNum
 				self.cache_block[indexNum][0][1]=self.time
 				self.missed+=1
-				print "miss"
-				print "miss because all NAN"
+				# print "miss"
+				# print "miss because all NAN"
 			else:
 				ways_count=0
 				while(ways_count<self.ways):
 					if(np.isnan(self.tag[indexNum][ways_count])):
 						self.missed+=1
-						print "miss"
+						# print "miss"
 						self.tag[indexNum][ways_count]=tagNum
 						self.cache_block[indexNum][ways_count][0]=blockNum
 						self.cache_block[indexNum][ways_count][1]=self.time
-						print "miss because not in set and set in not empty"
+						# print "miss because not in set and set in not empty"
 						break
 					elif(self.cache_block[indexNum][ways_count][0]==blockNum):
 						self.hits+=1
-						print "Hit"
+						# print "Hit"
 						self.cache_block[indexNum][ways_count][1]=self.time
 						break
 					elif(ways_count==(self.ways-1) and not np.isnan(self.tag[indexNum][ways_count])):
 						LUR=np.argmin(self.cache_block[indexNum,:,1])
 						self.missed+=1
-						print "miss"
-						print "miss because set is full and not found"
+						# print "miss"
+						# print "miss because set is full and not found"
 						self.tag[indexNum][LUR]=tagNum
 						self.cache_block[indexNum][LUR][0]=blockNum
 						self.cache_block[indexNum][LUR][1]=self.time
