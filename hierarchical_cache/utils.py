@@ -98,7 +98,7 @@ def split_add(add,sets,ways,cache_size):
 	address_size = len(add) * 4 
 	bin_add = bin(int(add, 16))[2:].zfill(address_size)
 	index_bit=int(math.log(sets,2)) #size of index bit
-	block_size=(cache_size)/(sets*ways) 
+	block_size=(cache_size*pow(2,10))/(sets*ways) 
 	offset_bit=int(math.log(block_size,2)) #size of offset bits
 	block_offset = bin_add[-offset_bit:] #offset bits points to memory location
 	index = bin_add[-(offset_bit+index_bit):-offset_bit] #index bits points to set
