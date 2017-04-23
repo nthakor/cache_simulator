@@ -8,9 +8,9 @@ We have developed two version of cache simulator.
 
 The input instructions are added for both the files in their respective folders.
 
-Students
-Nilay Thakor (13110129)
-Ashwini Nagare (14110080)
+# Members
+- Nilay Thakor (13110129)
+- Ashwini Nagare (14110080)
 
 Github Link: [Cache Similator](https://github.com/nthakor/cache_simulator)
 
