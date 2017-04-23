@@ -10,7 +10,7 @@ arguments = vars(parser.parse_args())
 
 cache=np.zeros(shape=[arguments['set'],arguments['ways'],2])
 tag_block=np.zeros(shape=[arguments['set'],arguments['ways']])
-cache[:]=np.NAN
+cache[:,:,0]=np.NAN
 tag_block[:]=np.NAN
 miss=0
 hits=0
@@ -38,22 +38,26 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 		nanInd=[0,0]
 		nanExist=False
 		hitOccur=False
-		# minTime
+		minTime=np.inf
 		r=np.arange(arguments['set'])
 		c=np.arange(arguments['ways'])
 		for x,y in itertools.product(r,c):
-			# print x,y
-			if(cache[x,y,0]==blockNum):
-				hits+=1
-				print "hit"
-				hitOccur=True
-				cache[x,y,1]=time
-				break
-			elif(np.isnan(cache[x,y,0]) and nanExist==False):
+			if(cache[x,y,1]<minTime):
+				minTime=cache[x,y,1]
+				minTr=x
+				minTc=y
+			if(np.isnan(cache[x,y,0]) and nanExist==False):
 				nanExist=True
 				nanInd=[x,y]
 				# print "nanChanged"
 				# break
+			elif(cache[x,y,0]==blockNum):
+				hits+=1
+				print "hit",
+				print cache[:,:,0].flatten()
+				hitOccur=True
+				cache[x,y,1]=time
+				break
 			else:
 				pass
 		if(hitOccur==False):
@@ -63,19 +67,15 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 				cache[n1,n2,1]=time
 				miss+=1
 				# print "miss"
-				print "bcz adding first time"
+				print "bcz adding first time",
+				print cache[:,:,0].flatten()
 			else:
-				idx=np.nanargmin(cache[:,:,1])
-				shape1=cache[:,:,1].shape[1]
-				r=int(idx%shape1)
-				c=int((idx-r)/shape1)
-				print "minTime Before replacing: %d"%(np.min(cache[:,:,1])),
-				print "minTime accrd to calcul: %d"%(cache[c,r,1]),
-				cache[r,c,0]=blockNum
-				cache[r,c,1]=time
+				cache[minTr,minTc,0]=blockNum
+				cache[minTr,minTc,1]=time
 				miss+=1
 				# print "miss"
-				print "replacing"
+				print "replacing",
+				print cache[:,:,0].flatten()
 
 		# break
 
