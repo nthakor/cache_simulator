@@ -40,6 +40,7 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 			cache[indexNum][0][0]=blockNum
 			cache[indexNum][0][1]=time
 			miss+=1
+			# print "miss"
 			print "miss because all NAN"
 		else:
 			ways_count=0
@@ -50,11 +51,12 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 					cache[indexNum][ways_count][0]=blockNum
 					cache[indexNum][ways_count][1]=time
 					print "miss because not in set and set in not empty"
+					# print "miss"
 					break
 				elif(cache[indexNum][ways_count][0]==blockNum):
 					hits+=1
 					cache[indexNum][ways_count][1]=time
-					print "Hit"
+					# print "Hit"
 					break
 				elif(ways_count==(ways-1) and not np.isnan(tag_block[indexNum][ways_count])):
 					LUR=np.argmin(cache[indexNum,:,1])
@@ -63,16 +65,10 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 					cache[indexNum][LUR][0]=blockNum
 					cache[indexNum][LUR][1]=time
 					print "miss because set is full and not found"
+					# print "miss"
 					break
 				else:
 					ways_count+=1
 
 
-for x in cache:
-	for i in range(len(x)):
-		print "%.2f (%.2f) \t |"%(x[i][0],x[i][1]),
-	# print "\n"
-
-
-
-print miss
+print "Hits: %d Miss: %d"%(hits,miss)

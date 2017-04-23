@@ -1,6 +1,6 @@
 import csv,argparse,math
 import numpy as np
-
+import itertools
 parser = argparse.ArgumentParser(description='Simulate a cache')
 parser.add_argument('-t', '--trace_file', help='Tracefile containing instructions', required=True)
 parser.add_argument('-w', '--ways', help='Number of Ways', required=True,type=int)
@@ -35,42 +35,50 @@ with open(arguments['trace_file'], 'rb') as csvfile:
 		blockNum=int(block_offset,2) #decimal value of block
 		tagNum=int(tag,2) #decimal value of tag 
 		ways=arguments['ways']
-		if(np.isnan(tag_block[indexNum][0])):
-			tag_block[indexNum][0]=tagNum
-			cache[indexNum][0][0]=blockNum
-			cache[indexNum][0][1]=time
-			miss+=1
-			print "miss because all NAN"
-		else:
-			ways_count=0
-			while(ways_count<ways):
-				if(np.isnan(tag_block[indexNum][ways_count])):
-					miss+=1
-					tag_block[indexNum][ways_count]=tagNum
-					cache[indexNum][ways_count][0]=blockNum
-					cache[indexNum][ways_count][1]=time
-					print "miss because not in set and set in not empty"
-					break
-				elif(cache[indexNum][ways_count][0]==blockNum):
-					hits+=1
-					cache[indexNum][ways_count][1]=time
-					print "Hit"
-					break
-				elif(ways_count==(ways-1) and not np.isnan(tag_block[indexNum][ways_count])):
-					LUR=np.argmin(cache[indexNum,:,1])
-					miss+=1
-					tag_block[indexNum][LUR]=tagNum
-					cache[indexNum][LUR][0]=blockNum
-					cache[indexNum][LUR][1]=time
-					print "miss because set is full and not found"
-					break
-				else:
-					ways_count+=1
+		nanInd=[0,0]
+		nanExist=False
+		hitOccur=False
+		r=np.arange(arguments['set'])
+		c=np.arange(arguments['ways'])
+		for x,y in itertools.product(r,c):
+			if(cache[x,y,0]==blockNum):
+				hits+=1
+				print "hit"
+				hitOccur
+				cache[x,y,1]=time
+				break
+			elif(np.isnan(cache[x,y,0])):
+				nanExist=True
+				nanInd=[x,y]
+				break
+			else:
+				pass
+		# print cache[:,:,0]
+		if(not hitOccur):
+			if(nanExist):
+				n1,n2=nanInd
+				cache[n1,n2,0]=blockNum		
+				cache[n1,n2,1]=time
+				miss+=1
+				print "miss"
+			else:
+				idx=np.nanargmin(cache[:,:,1])
+				shape1=cache[:,:,1].shape[1]
+				r=int(idx%shape1)
+				c=int((idx-r)/shape1)
+				cache[r,c,0]=blockNum
+				cache[r,c,1]=time
+				miss+=1
+				print "miss"
 
 
-for x in cache:
-	for i in range(len(x)):
-		print "%.2f (%.2f) \t |"%(x[i][0],x[i][1]),
+
+
+# for x in cache:
+# 	for i in range(len(x)):
+# 		print "%.2f (%.2f) \t |"%(x[i][0],x[i][1]),
+
+print "Hits: %d Miss: %d"%(hits,miss)
 	# print "\n"
 
 
